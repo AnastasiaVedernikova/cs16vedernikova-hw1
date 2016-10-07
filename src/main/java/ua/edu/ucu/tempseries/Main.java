@@ -6,7 +6,7 @@ package ua.edu.ucu.tempseries;
 public class Main {
     public static void main(String[] array) {
 
-        TemperatureSeriesAnalysis Tak = new TemperatureSeriesAnalysis(new double[] {1,5,7,8,-1,-2,100});
+        TemperatureSeriesAnalysis Tak = new TemperatureSeriesAnalysis(new double[] {1,5,7,8,23,-2,100});
         // System.out.println(Tak.addTemps(new double[]{2,3}));
         System.out.println(Tak.average());
         System.out.println(Tak.deviation());

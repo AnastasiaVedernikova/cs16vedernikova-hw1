@@ -229,8 +229,8 @@ public class TemperatureSeriesAnalysis {
             }
             this.temperatureSeries = l_d;
         }
-        for(int k=0; k< temps.length;k++){
-            this.temperatureSeries[this.LogicalSize] = temps[k];
+        for(double k: temps){
+            this.temperatureSeries[this.LogicalSize] = k;
             this.LogicalSize += 1;
         }
         return this.LogicalSize;

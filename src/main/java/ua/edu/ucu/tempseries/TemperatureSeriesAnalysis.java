@@ -1,12 +1,15 @@
 package ua.edu.ucu.tempseries;
 
 import java.util.Arrays;
+import java.util.InputMismatchException;
 
 public class TemperatureSeriesAnalysis {
 
     private double[] temperatureSeries;
+    private int LogicalSize = 0;
     public TemperatureSeriesAnalysis() {
         temperatureSeries = new double[10];
+        LogicalSize = 10;
         for (int i=0;i<10;i++){
             temperatureSeries[i] = i;
         }
@@ -14,6 +17,7 @@ public class TemperatureSeriesAnalysis {
 
     public TemperatureSeriesAnalysis(double[] temperatureSeries) {
         this.temperatureSeries = temperatureSeries;
+        this.LogicalSize = temperatureSeries.length;
         // System.out.println(temperatureSeries);
 
     }
@@ -22,9 +26,9 @@ public class TemperatureSeriesAnalysis {
         if (this.temperatureSeries.length != 0) {
             double sum = 0;
             int am = 0;
-            double av = 0;
-            for (int i = 0; i < this.temperatureSeries.length; i++) {
-                sum += this.temperatureSeries[i];
+            double av;
+            for (double i: this.temperatureSeries){
+                sum += i;
                 am += 1;
             }
             av = sum/am;
@@ -37,10 +41,10 @@ public class TemperatureSeriesAnalysis {
 
     public double deviation() {
         if (this.temperatureSeries.length != 0) {
-            double skv = 0;
+            double skv;
             double sum = 0;
-            for (int i = 0; i < this.temperatureSeries.length; i++) {
-                sum += Math.pow(this.temperatureSeries[i] - this.average(), 2);
+            for (double i : this.temperatureSeries) {
+                sum += Math.pow(i - this.average(), 2);
             }
             skv = Math.sqrt(sum / this.temperatureSeries.length);
             return skv;
@@ -81,11 +85,11 @@ public class TemperatureSeriesAnalysis {
         if (this.temperatureSeries.length != 0) {
             double max_neg = -99999999;
             double min_pos = 999999999;
-            for (int i = 0; i < this.temperatureSeries.length; i++) {
-                if (this.temperatureSeries[i] >= 0 && this.temperatureSeries[i] < min_pos) {
-                    min_pos = this.temperatureSeries[i];
-                } else if (this.temperatureSeries[i] < 0 && this.temperatureSeries[i] > max_neg) {
-                    max_neg = this.temperatureSeries[i];
+            for (double i: this.temperatureSeries) {
+                if (i >= 0 && i < min_pos) {
+                    min_pos = i;
+                } else if (i < 0 && i > max_neg) {
+                    max_neg = i;
                 }
             }
             if (max_neg * (-1) == min_pos) {
@@ -102,10 +106,13 @@ public class TemperatureSeriesAnalysis {
 
     public double findTempClosestToValue(double tempValue) {
         if (this.temperatureSeries.length != 0) {
+            if (this.temperatureSeries.length == 1 ){
+                return this.temperatureSeries[0];
+            }
             int am_to = 0;
             int am_after = 0;
-            for (int i = 0; i < this.temperatureSeries.length; i++) {
-                if (this.temperatureSeries[i] >= tempValue) {
+            for (double i:this.temperatureSeries) {
+                if (i >= tempValue) {
                     am_after += 1;
                 } else {
                     am_to += 1;
@@ -115,12 +122,12 @@ public class TemperatureSeriesAnalysis {
             int ar_after_ind = 0;
             double[] ar_to = new double[am_to];
             double[] ar_after = new double[am_after];
-            for (int i = 0; i < this.temperatureSeries.length; i++) {
-                if (this.temperatureSeries[i] >= tempValue) {
-                    ar_after[ar_after_ind] = this.temperatureSeries[i];
+            for (double i: this.temperatureSeries) {
+                if (i >= tempValue) {
+                    ar_after[ar_after_ind] = i;
                     ar_after_ind += 1;
                 } else {
-                    ar_to[ar_to_ind] = this.temperatureSeries[i];
+                    ar_to[ar_to_ind] = i;
                     ar_to_ind += 1;
                 }
             }
@@ -153,9 +160,9 @@ public class TemperatureSeriesAnalysis {
                         return ar_to[ar_to.length-1];
                     }
                 }
-            } else {
-                throw new IllegalArgumentException("try again");
             }
+        }else{
+            throw new IllegalArgumentException("try again");
         }
         return 0.0;
     }
@@ -165,8 +172,8 @@ public class TemperatureSeriesAnalysis {
 
     public double[] findTempsLessThen(double tempValue) {
         int am=0;
-        for(int i=0; i<this.temperatureSeries.length; i++){
-            if (this.temperatureSeries[i]<tempValue){
+        for(double i:this.temperatureSeries){
+            if (i<tempValue){
                 am += 1;
             }
         }
@@ -182,68 +189,50 @@ public class TemperatureSeriesAnalysis {
         for(int i=0; i<less.length; i++){
             less_num[i] = this.temperatureSeries[less[i]];
         }
-        return less_num;//??
+        return less_num;
     }
 
 
     public double[] findTempsGreaterThen(double tempValue) {
         int am=0;
-        for(int i=0; i<this.temperatureSeries.length; i++){
-            if (this.temperatureSeries[i]>=tempValue){
+        for(double i: this.temperatureSeries){
+            if (i>=tempValue){
                 am += 1;
             }
         }
-        int[] greater = new int[am];
+        double[] greater = new double[am];
         int lastIndex = 0;
-        for(int i=0; i<this.temperatureSeries.length; i++){
-            if (this.temperatureSeries[i]>=tempValue){
+        for(double i:this.temperatureSeries){
+            if (i>=tempValue){
                 greater[lastIndex] = i;
                 lastIndex += 1;
             }
         }
-        double[] greater_num = new double[am];
-        for(int i=0; i<greater.length; i++){
-            greater_num[i] = this.temperatureSeries[greater[i]];
-        }
-        return greater_num;
+        return greater;
 
     }
 
-    //  public TempSummaryStatistics summaryStatistics() {
-    //     return null;
-    //  }
+    public TempSummaryStatistics summaryStatistics() {
+         return new TempSummaryStatistics(average(),deviation(),min(),max());
+      }
 
     public int addTemps(double... temps) {
-        double[] input_ar = new double[temps.length];
-        for (int i=0; i< temps.length; i++){
-            input_ar[i] = temps[i];
+        for(double i: temps){
+            if(i < -273){
+                throw new InputMismatchException();
+            }
         }
-        if (Double.valueOf(this.temperatureSeries[this.temperatureSeries.length-1]) != null){
-            double[] l_d = new double[temperatureSeries.length];
-            for(int i=0; i<temperatureSeries.length; i++){
+        if (this.temperatureSeries.length == this.LogicalSize) {//create larger array
+            double[] l_d = new double[this.temperatureSeries.length * 2];
+            for (int i = 0; i < this.temperatureSeries.length; i++) {
                 l_d[i] = this.temperatureSeries[i];
             }
-            for (int i=0;i<=input_ar.length;i++){
-                l_d[temperatureSeries.length+i] = input_ar[i];
-            }
             this.temperatureSeries = l_d;
-        }else{
-            for(int i=0; i<this.temperatureSeries.length;i++){
-                for (int j=0; j<input_ar.length;i++){
-                    if (Double.valueOf(this.temperatureSeries[i]) == null){  ////?????????????
-                        this.temperatureSeries[i] = input_ar[j];
-                    }
-                }
-            }
         }
-        int sum=0;
-        for(int i=0; i<this.temperatureSeries.length;i++){
-            if (Double.valueOf(this.temperatureSeries[i]) != null){ /////////????????????????
-                sum += this.temperatureSeries[i];
-            }
+        for(int k=0; k< temps.length;k++){
+            this.temperatureSeries[this.LogicalSize] = temps[k];
+            this.LogicalSize += 1;
         }
-        sum = Math.round(sum);
-
-        return sum;
+        return this.LogicalSize;
     }
 }

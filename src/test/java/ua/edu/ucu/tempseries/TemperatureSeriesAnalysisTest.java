@@ -174,7 +174,7 @@ public class TemperatureSeriesAnalysisTest {
         expResult[3] = 100.0;
        // Arrays.toString(expResult);
         double[] actualResult = seriesAnalysis.findTempsGreaterThen(6);
-        assertSame(Arrays.toString(expResult), Arrays.toString(actualResult));
+        assertEquals(Arrays.toString(expResult), Arrays.toString(actualResult));
     }
 
     @Test

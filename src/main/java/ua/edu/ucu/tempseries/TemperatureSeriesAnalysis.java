@@ -8,9 +8,9 @@ public class TemperatureSeriesAnalysis {
     private double[] temperatureSeries;
     private int LogicalSize = 0;
     public TemperatureSeriesAnalysis() {
-        temperatureSeries = new double[10];
-        LogicalSize = 10;
-        for (int i=0;i<10;i++){
+        double[] temperatureSeries = new double[10];
+        int LogicalSize = 10;
+        for ( int i = 0; i < 10; i++) {
             temperatureSeries[i] = i;
         }
     }
@@ -27,13 +27,13 @@ public class TemperatureSeriesAnalysis {
             double sum = 0;
             int am = 0;
             double av;
-            for (double i: this.temperatureSeries){
+            for ( double i: this.temperatureSeries ){
                 sum += i;
                 am += 1;
             }
             av = sum/am;
             return av;
-        }else{
+        } else {
             throw new IllegalArgumentException("try again");
         }
 
@@ -48,58 +48,58 @@ public class TemperatureSeriesAnalysis {
             }
             skv = Math.sqrt(sum / this.temperatureSeries.length);
             return skv;
-        }else{
+        } else {
             throw new IllegalArgumentException("try again");
         }
     }
 
     public double min(){
         if (this.temperatureSeries.length != 0){
-            double min=this.temperatureSeries[0];
-            for (int i=1; i< this.temperatureSeries.length; i++){
-                if (this.temperatureSeries[i]< min){
+            double min = this.temperatureSeries[0];
+            for (int i = 1; i < this.temperatureSeries.length; i++){
+                if (this.temperatureSeries[i] < min) {
                     min = this.temperatureSeries[i];
                 }
             }
             return min;
-        }else{
+        } else {
             throw new IllegalArgumentException("try again");
         }
     }
 
     public double max() {
         if (this.temperatureSeries.length != 0){
-            double max=this.temperatureSeries[0];
-            for (int i=1; i<this.temperatureSeries.length; i++){
-                if (this.temperatureSeries[i]> max){
+            double max = this.temperatureSeries[0];
+            for (int i = 1; i < this.temperatureSeries.length; i++){
+                if (this.temperatureSeries[i] > max){
                     max = this.temperatureSeries[i];
                 }
             }
             return max;
-        }else{
+        } else {
             throw new IllegalArgumentException("try again");
         }
     }
 
     public double findTempClosestToZero() {
         if (this.temperatureSeries.length != 0) {
-            double max_neg = -99999999;
-            double min_pos = 999999999;
+            double maxneg = -99999998;
+            double minpos = 999999989;
             for (double i: this.temperatureSeries) {
-                if (i >= 0 && i < min_pos) {
-                    min_pos = i;
-                } else if (i < 0 && i > max_neg) {
-                    max_neg = i;
+                if (i >= 0 && i < minpos) {
+                    minpos = i;
+                } else if (i < 0 && i > maxneg) {
+                    maxneg = i;
                 }
             }
-            if (max_neg * (-1) == min_pos) {
-                return min_pos;
-            } else if (max_neg * (-1) > min_pos) {
-                return min_pos;
+            if (maxneg * (-1) == minpos) {
+                return minpos;
+            } else if (maxneg * (-1) > minpos) {
+                return minpos;
             } else {
-                return max_neg;
+                return maxneg;
             }
-        }else{
+        } else {
             throw new IllegalArgumentException("try again");
         }
     }
@@ -109,59 +109,59 @@ public class TemperatureSeriesAnalysis {
             if (this.temperatureSeries.length == 1 ){
                 return this.temperatureSeries[0];
             }
-            int am_to = 0;
-            int am_after = 0;
+            int amTo = 0;
+            int amAfter = 0;
             for (double i:this.temperatureSeries) {
                 if (i >= tempValue) {
-                    am_after += 1;
+                    amAfter += 1;
                 } else {
-                    am_to += 1;
+                    amTo += 1;
                 }
             }
-            int ar_to_ind = 0;
-            int ar_after_ind = 0;
-            double[] ar_to = new double[am_to];
-            double[] ar_after = new double[am_after];
+            int arToInd = 0;
+            int arAfterInd = 0;
+            double[] arTo = new double[amTo];
+            double[] arAfter = new double[amAfter];
             for (double i: this.temperatureSeries) {
                 if (i >= tempValue) {
-                    ar_after[ar_after_ind] = i;
-                    ar_after_ind += 1;
+                    arAfter[arAfterInd] = i;
+                    arAfterInd += 1;
                 } else {
-                    ar_to[ar_to_ind] = i;
-                    ar_to_ind += 1;
+                    arTo[arToInd] = i;
+                    arToInd += 1;
                 }
             }
-            Arrays.sort(ar_to);
-            Arrays.sort(ar_after);
-            if (ar_to[ar_to.length-1] > 0 && ar_after[0] > 0) {
-                if (tempValue - ar_to[ar_to.length-1] < ar_after[0] - tempValue) {
-                    return ar_to[ar_to.length-1];
+            Arrays.sort(arTo);
+            Arrays.sort(arAfter);
+            if (arTo[arTo.length-1] > 0 && arAfter[0] > 0) {
+                if (tempValue - arTo[arTo.length-1] < arAfter[0] - tempValue) {
+                    return arTo[arTo.length-1];
                 } else {
-                    return ar_after[0];
+                    return arAfter[0];
                 }
 
-            } else if (ar_to[ar_to.length-1] < 0 && ar_after[0] < 0) {
-                if (ar_to[ar_to.length-1] * (-1) - tempValue * (-1) > tempValue * (-1) - ar_after[0] * (-1)) {
-                    return ar_after[0];
+            } else if (arTo[arTo.length-1] < 0 && arAfter[0] < 0) {
+                if (arTo[arTo.length-1] * (-1) - tempValue * (-1) > tempValue * (-1) - arAfter[0] * (-1)) {
+                    return arAfter[0];
                 } else {
-                    return ar_to[ar_to.length-1];
+                    return arTo[arTo.length-1];
                 }
-            } else if (ar_to[ar_to.length-1] < 0 && ar_after[0] > 0) {
+            } else if (arTo[arTo.length-1] < 0 && arAfter[0] > 0) {
                 if (tempValue >= 0) {
-                    if (ar_after[0] - tempValue <= ar_to[ar_to.length-1] * (-1) + tempValue) {
-                        return ar_after[0];
+                    if (arAfter[0] - tempValue <= arTo[arTo.length-1] * (-1) + tempValue) {
+                        return arAfter[0];
                     } else {
-                        return ar_to[ar_to.length-1];
+                        return arTo[arTo.length-1];
                     }
                 } else {
-                    if (ar_after[0] + (-1) * tempValue <= ar_to[ar_to.length-1] * (-1) - (-1) * tempValue) {
-                        return ar_after[0];
+                    if (arAfter[0] + (-1) * tempValue <= arTo[arTo.length-1] * (-1) - (-1) * tempValue) {
+                        return arAfter[0];
                     } else {
-                        return ar_to[ar_to.length-1];
+                        return arTo[arTo.length-1];
                     }
                 }
             }
-        }else{
+        } else {
             throw new IllegalArgumentException("try again");
         }
         return 0.0;
@@ -171,39 +171,39 @@ public class TemperatureSeriesAnalysis {
     }
 
     public double[] findTempsLessThen(double tempValue) {
-        int am=0;
+        int am = 0;
         for(double i:this.temperatureSeries){
-            if (i<tempValue){
+            if (i < tempValue){
                 am += 1;
             }
         }
         int[] less = new int[am];
         int lastIndex = 0;
-        for(int i=0; i<this.temperatureSeries.length; i++){
-            if (this.temperatureSeries[i]<tempValue){
+        for(int i=0; i < this.temperatureSeries.length; i++) {
+            if (this.temperatureSeries[i] < tempValue){
                 less[lastIndex] = i;
                 lastIndex += 1;
             }
         }
-        double[] less_num = new double[am];
-        for(int i=0; i<less.length; i++){
-            less_num[i] = this.temperatureSeries[less[i]];
+        double[] lessNum = new double[am];
+        for(int i=0; i<less.length; i++) {
+            lessNum[i] = this.temperatureSeries[less[i]];
         }
-        return less_num;
+        return lessNum;
     }
 
 
     public double[] findTempsGreaterThen(double tempValue) {
-        int am=0;
-        for(double i: this.temperatureSeries){
-            if (i>=tempValue){
+        int am = 0;
+        for(double i: this.temperatureSeries) {
+            if (i >=  tempValue) {
                 am += 1;
             }
         }
         double[] greater = new double[am];
         int lastIndex = 0;
-        for(double i:this.temperatureSeries){
-            if (i>=tempValue){
+        for(double i: this.temperatureSeries) {
+            if (i >= tempValue){
                 greater[lastIndex] = i;
                 lastIndex += 1;
             }
@@ -213,21 +213,21 @@ public class TemperatureSeriesAnalysis {
     }
 
     public TempSummaryStatistics summaryStatistics() {
-         return new TempSummaryStatistics(average(),deviation(),min(),max());
+         return new TempSummaryStatistics(average(), deviation(), min(), max());
       }
 
     public int addTemps(double... temps) {
-        for(double i: temps){
-            if(i < -273){
+        for(double i: temps) {
+            if(i < -273.1) {
                 throw new InputMismatchException();
             }
         }
         if (this.temperatureSeries.length == this.LogicalSize) {//create larger array
-            double[] l_d = new double[this.temperatureSeries.length * 2];
+            double[] lid = new double[this.temperatureSeries.length * 2];
             for (int i = 0; i < this.temperatureSeries.length; i++) {
-                l_d[i] = this.temperatureSeries[i];
+                lid[i] = this.temperatureSeries[i];
             }
-            this.temperatureSeries = l_d;
+            this.temperatureSeries = lid;
         }
         for(double k: temps){
             this.temperatureSeries[this.LogicalSize] = k;
